@@ -1,0 +1,49 @@
+﻿@model Order
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameForInnerType((OrderItem oi) => oi.NumberInOrder)</th>
+            <th>@Html.DisplayNameForInnerType((Product p) => p.ImagePath)</th>
+            <th>@Html.DisplayNameForInnerType((Product p) => p.Name)</th>
+            <th>@Html.DisplayNameForInnerType((Product p) => p.Quantity)</th>
+            <th>@Html.DisplayNameForInnerType((Product p) => p.Price)</th>
+            <th>Стоимость</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.OrderItems) {
+            <tr>
+                <td class="text-right">
+                    @Html.DisplayFor(m => item.NumberInOrder)
+                </td>
+                <td class="text-center">
+                    <img src="@item.Product.ImagePath" width="57"
+                         class="img-thumbnail" />
+                </td>
+                <td class="text-left">
+                    @Html.DisplayFor(m => item.Product.Name)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(m => item.ProductQuantity)
+                </td>
+                <td class="text-right">
+                    @Html.DisplayFor(m => item.Product.Price)
+                </td>
+                <td class="text-right">
+                    @($"{(item.ProductQuantity * item.Product.Price):N0}") руб.
+                </td>
+            </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-right" colspan="5">
+                <h3><b>Итого:</b></h3>
+            </td>
+            <td class="text-right">
+                <h3><b>@Html.DisplayFor(m => m.TotalSum)</b></h3>
+            </td>
+        </tr>
+    </tfoot>
+</table>

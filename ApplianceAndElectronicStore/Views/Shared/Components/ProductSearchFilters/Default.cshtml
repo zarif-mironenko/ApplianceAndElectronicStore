@@ -1,0 +1,57 @@
+﻿@model ProductSearchFiltersViewModel
+
+<h4 class="text-center">Подбор по параметрам</h4>
+
+<form method="post">
+    <div class="panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Цена</b></div>
+            <div class="panel-body">
+                <input asp-for="MinProdPrice" class="form-control" /> руб. -
+                <input asp-for="MaxProdPrice" class="form-control" /> руб.
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading"><b>Производитель</b></div>
+            <div class="panel-body">
+                @foreach (var item in Model.Manufacturers) {
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="@($"Manufacturers[{item.Key}].IsSelected")"
+                                   value="true" @(item.Value.IsSelected ? "checked" : "") />&nbsp;
+                            @Html.DisplayFor(m => item.Value.Manufacturer.Name)
+                            @*<input type="hidden" name="@($"Manufacturers[{item.Key}].Manufacturer.Id")"
+                                   value="@item.Value.Manufacturer.Id" />*@
+                        </label>
+                    </div>
+                }
+            </div>
+        </div>
+        @foreach (var prodSpec in Model.ProductSpecifications) {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <b>@Html.DisplayFor(m => prodSpec.Value.Name)</b>
+                </div>
+                <div class="panel-body">
+                    <input asp-for="ProductSpecifications[prodSpec.Key].Id" />
+                    <input asp-for="ProductSpecifications[prodSpec.Key].Name" type="hidden" />
+                    @foreach (var prodSpecVal in Model.ProdSpecsWithValues[prodSpec.Key]) {
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox" name="@($"ProdSpecsWithValues[{prodSpec.Key}][{prodSpecVal.Key}].IsSelected")"
+                                        value="true" @(prodSpecVal.Value.IsSelected ? "checked" : "") />&nbsp;
+                                @prodSpecVal.Value.ProductSpecificationValue.Value
+                                @*<input type="hidden"
+                                        name="@($"ProdSpecsWithValues[{prodSpec.Key}][{prodSpecVal.Key}].ProductSpecificationValue.Id")"
+                                        value="@prodSpecVal.Value.ProductSpecificationValue.Id" />*@
+                            </label>
+                        </div>
+                        }
+                </div>
+            </div>
+        }
+    </div>
+    <div class="form-group">
+        <input type="submit" class="btn btn-primary btn-block" value="Применить" />
+    </div>
+</form>

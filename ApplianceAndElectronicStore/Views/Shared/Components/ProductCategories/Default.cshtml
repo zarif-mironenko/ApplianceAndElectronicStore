@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Category>
+
+@foreach (Category category in Model) {
+    <a class="catLink btn btn-block @(category.NameForUrl == ViewBag.SelectedCategory ? "btn-primary": "btn-default")"
+       asp-action="Index" asp-controller="Products"
+       asp-route-category="@category.NameForUrl">
+        @category.Name
+    </a>
+}

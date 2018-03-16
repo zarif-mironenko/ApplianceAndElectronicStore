@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - Магазин быттехники и электроники</title>
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position"
+              asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/lib/font-awesome/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Переключить навигацию</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-controller="Products" asp-action="Index"
+                   class="navbar-brand">Магазин быттехники и электроники</a>
+            </div>
+            <div class="navbar-collapse collapse">
+                @if (User.IsInRole("user") || !User.Identity.IsAuthenticated) {
+                    @await Component.InvokeAsync("CartSummary")
+                }
+                @await Html.PartialAsync("_LoginPartial")
+            </div>
+        </div>
+    </nav>
+    <div class="container-fluid body-content">
+        <div class="row equal">
+            <section class="col-md-2">
+                <div id="leftSidebar" class="panel panel-default">
+                    <div class="panel-body">
+                        @await Component.InvokeAsync("ProductCategories")
+                        @if (ViewBag.SelectedCategory != null) {
+                            <br />
+                            @await Component.InvokeAsync("ProductSearchFilters",
+                                new {
+                                    categoryId = ViewBag.SelectedCategory.Id,
+                                    viewModel = ViewBag.FiltersViewModel
+                                })
+                        }
+                    </div>
+                </div>
+            </section>
+            <section class="col-md-10">
+                <div id="pageContent" class="panel panel-default">
+                    <div class="panel-heading">
+                        <h2 class="text-center">@(ViewBag.PageCaption ?? ViewBag.Title)</h2>
+                    </div>
+                    <div class="panel-body">
+                        @if (TempData["message"] != null) {
+                            <div class="alert @(TempData["alertContextClass"] ?? "alert-success")
+                                 alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                @Html.Raw(TempData["message"])
+                            </div>
+                        }
+                        @RenderBody()
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <footer class="navbar navbar-inverse navbar-static-top">
+        <p class="navbar-text">
+            &copy; 2017@(DateTime.Now.Year > 2017 ? $"-{DateTime.Now.Year}" : "") - Магазин быттехники и электроники
+        </p>
+    </footer>
+    
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-K+ctZQ+LL8q6tP7I94W+qzQsfRV2a+AfHIi9k8z8l9ggpc8X+Ytst4yBo/hH+8Fk">
+        </script>
+        <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <script>changeSearchFormOffset()</script>
+
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,264 @@
+﻿body {
+    padding-top: 65px;
+    padding-bottom: 50px;
+    background-color: ghostwhite;
+}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+}
+
+html, body {
+    height: 100%;
+}
+
+/* Carousel */
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/* Make .svg files in the carousel display properly in older browsers */
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/* QR code generator */
+#qrCode {
+    margin: 15px;
+}
+
+/* Hide/rearrange for smaller screens */
+@media screen and (max-width: 767px) {
+    /* Hide captions */
+    .carousel-caption {
+        display: none;
+    }
+}
+
+#formSearchProduct {
+    width: 400px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 30px;
+}
+
+.control-label {
+    text-align: left !important;
+}
+
+span[data-valmsg-for] {
+    height: 10px;
+}
+
+footer.navbar {
+    margin-bottom: 0;
+    bottom: 0;
+    border-width: 0;
+}
+
+footer.navbar .navbar-text {
+    float: none;
+    text-align: center;
+}
+
+hr {
+    border-color: gray;
+}
+
+.page-header {
+    border-bottom-color: darkgray;
+}
+
+.body-content [class~=col-] {
+    padding: 0 1vw;
+}
+
+.panel-heading > h2 {
+    margin: 3px 0;
+}
+
+@media (min-width: 768px) and (max-width : 991px) {
+    body {
+        padding-top: 110px;
+    }
+}
+
+@media (max-width : 767px) {
+    #pageContent {
+        min-height: calc(50vh - 16px);
+    }
+}
+
+@media (min-width: 768px) and (max-width : 991px) {
+    #pageContent {
+        min-height: calc(60vh - 25px);
+    }
+}
+
+@media (max-width : 991px) {
+    #pageContent {
+        margin-top: 25px;
+        min-width: 80vw;
+    }
+}
+
+@media (min-width: 992px) {
+    #leftSidebar, #pageContent {
+        min-height: 80vh;
+    }
+}
+
+.equal, .equal > [class*='col-'] {
+    display: flex;
+    align-content: space-around;
+    flex: auto;
+    flex-wrap: wrap;
+}
+
+.equal > [class*='col-'] > .thumbnail {
+    display: flex;
+    flex-grow: 1;
+    align-content: space-around;
+    align-items: stretch;
+    flex-direction: column;
+}
+
+#leftSidebar, #pageContent {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-bottom: 10px;
+}
+
+#cart {
+    margin-right: 0;
+}
+
+.btn-link:hover, .product-details-link:hover {
+    text-decoration: none;
+}
+
+.product-details-link {
+    color: #333;
+}
+
+.product-details-link:hover {
+    color: dodgerblue;
+}
+
+.thumbnail:hover {
+    border-color: chocolate;
+}
+
+.nav button, .nav a.btn {
+    margin-right: 30px;
+}
+
+#products {
+    margin-bottom: 20px;
+}
+
+#products img {
+    width: 170px;
+    height: 170px;
+}
+
+@media (min-width: 707px) {
+    #products > [class*='col-'] {
+        flex-grow: 0;
+    }
+}
+
+.product-name {
+    font-weight: bold;
+    padding: 9px;
+}
+
+.product-price {
+    text-align: center;
+    font-size: 20pt;
+}
+
+.in-stock-status {
+    font-size: 17pt;
+}
+
+.input-validation-error {
+    border-color: red;
+    background-color: #fee;
+}
+
+.add-to-cart-btn > b {
+    vertical-align: middle;
+    text-transform: uppercase;
+}
+
+.nav-tabs {
+    margin-bottom: 15px;
+}
+
+thead {
+    background-color: #f5f5f5;
+}
+
+th {
+    text-align: center;
+}
+
+#productDesription {
+    text-indent: 2em;
+    text-align: justify;
+}
+
+span#pageTitle {
+    font-size: x-large;
+}
+
+#lnkBackToList, .catLink {
+    white-space: normal;
+}
+
+.catLink {
+    text-align: left;
+}
+
+.pagination {
+    margin: 0;
+    vertical-align: middle;
+}
+
+#formLogoutInDropdownMenu {
+    margin-top: -4px;
+    margin-bottom: 3px;
+    padding: 0;
+}
+
+#btnLogoutInDropdownMenu {
+    color: #333;
+    padding: 2px 20px;
+    margin-top: 0;
+    text-align: left;
+}
+
+#btnLogoutInDropdownMenu:hover {
+    background-color: #f5f5f5;
+}
+
+.donut-chart {
+    width: 600px;
+    height: 300px;
+    margin: 0 auto;
+}
+
+.ajax-load {
+    visibility: hidden;
+}

@@ -1,0 +1,22 @@
+﻿@model ProductsListViewModel
+
+@{
+    ViewBag.Title = "Поиск товара";
+}
+
+@Html.Partial("_ProductsSearchFormPartial")
+
+<ol class="breadcrumb">
+    <li><a asp-action="Index"><span class="fa fa-home fa-lg"></span></a></li>
+    <li class="active">Поиск</li>
+</ol>
+
+<h2>@ViewBag.SearchTerm</h2>
+
+<h3>Результаты поиска</h3>
+
+@if (!Model.Products.Any()) {
+    <p>Нет товаров, которые соответствуют критериям поиска.</p>
+} else {
+    @await Html.PartialAsync("_ProductsListPartial", Model)
+}

@@ -1,0 +1,108 @@
+﻿@model Product
+
+@{
+    ViewBag.Title = "Информация о товаре";
+}
+
+<ol class="breadcrumb">
+    @if (ViewBag.CurrentPageNumber > 1) {
+        <li>
+            <a asp-action="Index" asp-route-category="@ViewBag.SelectedCategory?.NameForUrl"
+               asp-route-page="@ViewBag.CurrentPageNumber">
+                <span class="fa fa-chevron-left"></span> Назад
+            </a>
+        </li>
+    }
+    <li><a asp-action="Index"><span class="fa fa-home fa-lg"></span></a></li>
+    @if (ViewBag.SelectedCategory != null) {
+        <li>
+            <a asp-action="Index" asp-route-category="@ViewBag.SelectedCategory.NameForUrl">
+                @ViewBag.SelectedCategory.Name
+            </a>
+        </li>
+    }
+    <li class="active">@Model.Name</li>
+</ol>
+<div class="row">
+    <div class="col-md-6">
+        <div class="thumbnail">
+            <img src="@(Model.ImagePath ?? "/images/products/no-product-image.png")" height="228" />
+        </div>
+        <br />
+        @if (Model.ProductSpecificationValues.Any()) {
+            <ul class="nav nav-tabs nav-justified">
+                <li role="presentation" class="active">
+                    <a href="#productDesription" data-toggle="tab">Описание</a>
+                </li>
+                <li role="presentation">
+                    <a href="#productSpecifications" data-toggle="tab">Характеристики</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="productDesription" role="tabpanel">
+                    @Html.Raw(Model.Description)
+                </div>
+                <div class="tab-pane fade" id="productSpecifications" role="tabpanel">
+                    <table class="table table-bordered table-responsive table-striped">
+                        <tbody>
+                            @foreach (var item in Model.ProductSpecificationValues) {
+                                <tr>
+                                    <th class="text-left">@Html.DisplayFor(m => item.ProductSpecification.Name)</th>
+                                    <td>@Html.DisplayFor(m => item.Value)</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        } else {
+            <fieldset>
+                <legend>Описание</legend>
+                @Html.Raw(Model.Description)
+            </fieldset>
+        }
+    </div>
+    <div class="col-md-5 col-md-offset-1">
+        <h1 style="margin-top: 5px">@Html.DisplayFor(m => m.Name)</h1>
+        <ul class="list-group">
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(m => m.ManufacturerId):</b>&nbsp;
+                @Html.DisplayFor(m => m.Manufacturer.Name)
+            </li>
+            <li class="list-group-item">
+                <b>@Html.DisplayNameFor(m => m.ProductModel):</b>&nbsp;
+                @Html.DisplayFor(m => m.ProductModel)
+            </li>
+        </ul>
+        <h2>@Html.DisplayFor(m => m.Price)</h2>
+        @if (Model.Quantity > 0) {
+            <p class="text-success in-stock-status">Есть в наличии</p>
+            <br />
+            <input id="prodQtyInStock" type="hidden" value="@Model.Quantity" />
+            <form asp-action="AddToCart" asp-controller="Cart" method="post">
+                <input type="hidden" id="productId" name="productId" value="@Model.Id" />
+                <input type="hidden" name="returnUrl"
+                       value="@Url.Action("Index", new { category = ViewBag.SelectedCategory?.NameForUrl ?? "",
+                                                     page = ViewBag.CurrentPageNumber ?? "" })" />
+                <div class="form-group">
+                    <label for="quantity" class="control-label">Количество</label><br />
+                    <input type="number" id="quantity" name="quantity"
+                           class="form-control" min="1" value="1" />
+                    <span class="text-danger field-validation-valid"
+                          data-valmsg-for="quantity" data-valmsg-replace="true"></span>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success btn-block form-control">
+                        <span class="fa fa-cart-plus fa-lg"></span>&nbsp;В корзину
+                    </button>
+                </div>
+            </form>
+        } else {
+            <h3 class="text-muted in-stock-status">Нет на складе</h3>
+        }
+    </div>
+</div>
+
+@section Scripts {
+    <script>checkAvailableProductQtyForOrder($('form button'));</script>
+}

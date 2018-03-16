@@ -1,0 +1,15 @@
+﻿@model Cart
+
+<div id="cart" class="navbar-right">
+    <a asp-controller="Cart" asp-action="Index"
+       asp-route-returnUrl="@ViewBag.ReturnUrl"
+       class="btn btn-default navbar-btn">
+        <span class="fa fa-shopping-cart"></span>&nbsp;
+        @if (Model.Items.Count() > 0) {
+            <small>
+                Товаров: @Model.Items.Sum(x => x.ProductQuantity) -
+                @Html.DisplayFor(m => m.TotalValue)
+            </small>
+        }
+    </a>
+</div>

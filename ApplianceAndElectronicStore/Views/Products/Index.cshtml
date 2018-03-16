@@ -1,0 +1,16 @@
+﻿@model ProductsListViewModel
+@{
+    ViewBag.Title = "Главная";
+    ViewBag.PageCaption = "Каталог товаров";
+}
+
+@Html.Partial("_ProductsSearchFormPartial")
+
+@if (Model.CurrentCategory != null) {
+    <ol class="breadcrumb">
+        <li><a asp-action="Index"><span class="fa fa-home fa-lg"></span></a></li>
+        <li class="active">@Model.CurrentCategory.Name</li>
+    </ol>
+}
+
+@await Html.PartialAsync("_ProductsListPartial", Model)

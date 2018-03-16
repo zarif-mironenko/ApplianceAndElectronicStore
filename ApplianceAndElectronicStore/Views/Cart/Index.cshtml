@@ -1,0 +1,95 @@
+﻿@model ApplianceAndElectronicStore.Models.ViewModels.CartIndexViewModel
+@{
+    ViewBag.Title = "Корзина";
+    ViewBag.PageCaption = "Ваша корзина";
+}
+
+@if (!Model.Cart.Items.Any()) {
+    ViewBag.ReturnUrl = Model.ReturnUrl;
+    @Html.Partial("_EmptyCartPartial")
+} else {
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>Номер п/п</th>
+                <th>@Html.DisplayNameForInnerType((Product p) => p.ImagePath)</th>
+                <th>@Html.DisplayNameForInnerType((Product p) => p.Name)</th>
+                <th>@Html.DisplayNameForInnerType((Product p) => p.Quantity)</th>
+                <th>@Html.DisplayNameForInnerType((Product p) => p.Price)</th>
+                <th>Стоимость</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Cart.Items.Count; i++) {
+                <tr>
+                    <td class="text-right">
+                        @Html.DisplayFor(m => m.Cart.Items[i].Id)
+                    </td>
+                    <td class="text-center">
+                        <img src="@Model.Cart.Items[i].Product.ImagePath" width="57"
+                             class="img-thumbnail" />
+                    </td>
+                    <td class="text-left">@Model.Cart.Items[i].Product.Name</td>
+                    <td style="max-width: 170px">
+                        <input id="pQtyInStock@(i)" type="hidden" class="prodQtyInStock"
+                               value="@Model.Cart.Items[i].Product.Quantity" />
+                        <form method="post">
+                            <input type="hidden" name="cartItemId" value="@Model.Cart.Items[i].Id" />
+                            <input type="hidden" id="productId" name="productId"
+                                   value="@Model.Cart.Items[i].Product.Id" />
+                            <input type="hidden" name="returnUrl" value="@Model.ReturnUrl" />
+
+                            <div class="input-group input-group-sm">
+                                <input type="number" id="qty@(i)" name="quantity"
+                                       value="@Model.Cart.Items[i].ProductQuantity" data-index="@i"
+                                       class="form-control quantity" min="1" />
+                                <span class="input-group-btn">
+                                    <a href="#" data-toggle="tooltip" title="Обновить">Hover over me</a>
+                                    <button data-index="@i" asp-action="EditProductQuantity"
+                                            data-toggle="tooltip" data-placement="bottom" title="Обновить"
+                                            class="btn btn-sm btn-success btnUpdateQty">
+                                        <span class="fa fa-refresh fa-lg"></span>
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" asp-action="RemoveFromCart"
+                                            data-toggle="tooltip" data-placement="bottom" title="Удалить">
+                                        <span class="fa fa-remove fa-lg"></span>
+                                    </button>
+                                </span>
+                            </div>
+                            <span class="text-danger field-validation-valid" data-index="@i"
+                                  data-valmsg-for="qty@(i)" data-valmsg-replace="true"></span>
+                        </form>
+                    </td>
+                    <td class="text-right">@Html.DisplayFor(m => Model.Cart.Items[i].Product.Price)</td>
+                    <td class="text-right">
+                        @($"{(Model.Cart.Items[i].ProductQuantity * Model.Cart.Items[i].Product.Price):N0}") руб.
+                    </td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td class="text-right" colspan="5"><b>Итого:</b></td>
+                <td class="text-right">@Html.DisplayFor(m => m.Cart.TotalValue)</td>
+            </tr>
+        </tfoot>
+    </table>
+    <div class="text-justify">
+        <a class="btn btn-default"
+           href="@(Model.ReturnUrl ?? Url.Action("Index", "Products"))">
+            Продолжить покупки
+        </a>
+        <a asp-controller="Orders" asp-action="Checkout"
+           asp-route-returnUrl="@Context.Request.Query["returnUrl"]"
+           class="btn btn-primary pull-right">
+            Оформить заказ
+        </a>
+    </div>
+
+    @section Scripts {
+        <script>
+            $('[data-toggle="tooltip"]').tooltip();
+            checkAvailableProductQtyForOrder($('.btnUpdateQty'), @Model.Cart.Items.Count, true);
+        </script>
+    }
+}

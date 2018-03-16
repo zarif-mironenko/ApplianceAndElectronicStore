@@ -1,0 +1,40 @@
+﻿@model ProductsListViewModel
+
+@* Вывод товаров из списка *@
+<div id="products" class="row equal">
+    @foreach (var item in Model.Products) {
+        <div class="col-sm-6 col-md-4">
+            <div class="thumbnail">
+                <a asp-action="ProductDetails" asp-route-category="@Model.CurrentCategory?.NameForUrl"
+                   asp-route-page="@(Model.PagingInfo.CurrentPage == 1 ? null : Model.PagingInfo.CurrentPage)"
+                   asp-route-id="@item.Id" class="product-details-link">
+                    <img src="@(item.ImagePath ?? "/images/products/no-product-image.png")"
+                         width="300" height="300" class="img-responsive">
+                    <h4 class="product-name">@Html.DisplayFor(m => item.Name)</h4>
+                </a>
+                <div class="caption">
+                    <p class="product-price">@Html.DisplayFor(m => item.Price)</p>
+                    @if (item.Quantity > 0) {
+                        <p class="text-success text-center in-stock-status">Есть в наличии</p>
+                        <form id="formProduct@(item.Id)" asp-action="AddToCart" asp-controller="Cart" method="post">
+                            <input type="hidden" name="productId" value="@item.Id" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <input type="hidden" name="returnUrl"
+                                   value="@Context.Request.GetEncodedPathAndQuery()" />
+                            <button class="btn btn-success btn-block add-to-cart-btn">
+                                <span class="fa fa-cart-plus fa-lg"></span>&emsp;<b>В корзину</b>
+                            </button>
+                        </form>
+                    } else {
+                        <h3 class="text-muted text-center in-stock-status">Нет на складе</h3>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@* Пагинация *@
+<div class="text-center" style="margin: 20px 0">
+    @await Html.PartialAsync("_PaginationPartial", Model.PagingInfo)
+</div>

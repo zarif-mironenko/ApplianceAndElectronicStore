@@ -1,0 +1,133 @@
+﻿@model Order
+@inject Cart Cart
+
+@{
+    ViewBag.Title = "Оформление заказа";
+}
+
+@if (!Cart.Items.Any()) {
+    @Html.Partial("_EmptyCartPartial")
+} else {
+    @* Вывод товаров в заказе *@
+    <form asp-action="Checkout" method="post">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">
+                    <span class="fa fa-shopping-cart"></span> Ваш заказ
+                </h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameForInnerType((Product p) => p.ImagePath)</th>
+                            <th>@Html.DisplayNameForInnerType((Product p) => p.Name)</th>
+                            <th>@Html.DisplayNameForInnerType((Product p) => p.Quantity)</th>
+                            <th>@Html.DisplayNameForInnerType((Product p) => p.Price)</th>
+                            <th>Стоимость</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Cart.Items) {
+                            <tr>
+                                <td class="text-center">
+                                    <img src="@item.Product.ImagePath" width="57"
+                                            class="img-thumbnail" />
+                                </td>
+                                <td class="text-left">
+                                    @Html.DisplayFor(m => item.Product.Name)
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(m => item.ProductQuantity)
+                                </td>
+                                <td class="text-right">
+                                    @Html.DisplayFor(m => item.Product.Price)
+                                </td>
+                                <td class="text-right">
+                                    @($"{(item.ProductQuantity * item.Product.Price):N0}") руб.
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-right" colspan="4">
+                                <h3><b>Итого:</b></h3>
+                            </td>
+                            <td class="text-right">
+                                <h3><b>@Html.DisplayFor(m => Cart.TotalValue)</b></h3>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <hr />
+        <br />
+
+        @* Ввод информации о доставке *@
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="panel-title">Информация о доставке</h4>
+            </div>
+            <div class="panel-body">
+                <div class="form-group">
+                    <label asp-for="City" class="control-label"></label>
+                    <input asp-for="City" class="form-control" />
+                    <span asp-validation-for="City"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Region" class="control-label"></label>
+                    <input asp-for="Region" class="form-control" />
+                    <span asp-validation-for="Region"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="control-label"></label>
+                    <input asp-for="Address" class="form-control" />
+                    <span asp-validation-for="Address"></span>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <span class="fa fa-truck"></span>&nbsp;
+                                    <display-name for="DeliveryMethod" />
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="radio-inline">
+                                    <input type="radio" asp-for="DeliveryMethod"
+                                           value="@Model.DeliveryMethod" />
+                                    @Html.DisplayFor(m => m.DeliveryMethod)
+                                </div>
+                                <span id="deliveryPrice" class="pull-right">0 руб.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <span class="fa fa-money"></span>&nbsp;
+                                    <display-name for="PaymentMethod" />
+                                </h4>
+                            </div>
+                            <div class="panel-body">
+                                <div class="radio-inline">
+                                    <input type="radio" asp-for="PaymentMethod"
+                                           value="@Model.PaymentMethod" />
+                                    @Html.DisplayFor(m => m.PaymentMethod)
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group">
+            <input type="submit" value="Подтверждение заказа" class="btn btn-block btn-primary" />
+        </div>
+    </form>
+}

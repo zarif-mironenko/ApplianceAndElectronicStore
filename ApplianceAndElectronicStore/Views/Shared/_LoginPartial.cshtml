@@ -1,0 +1,31 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using ApplianceAndElectronicStore.Models
+
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@if (SignInManager.IsSignedIn(User)) {
+    <form asp-controller="Account" asp-action="Logout" method="post" id="logoutForm" class="navbar-right">
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a href="@Url.PersonalPageLink(User)" title="Личный кабинет">
+                    <span class="fa fa-user"></span>&nbsp;
+                    Здравствуйте, @UserManager.GetUserName(User)!
+                </a>
+            </li>
+            <li>
+                <button type="submit" class="btn btn-link navbar-btn navbar-link">
+                    <span class="fa fa-sign-out"></span> Выйти
+                </button>
+            </li>
+        </ul>
+    </form>
+} else {
+    <ul class="nav navbar-nav navbar-right">
+        <li>
+            <a asp-controller="Account" asp-action="Login">
+                <span class="fa fa-sign-in"></span> Вход
+            </a>
+        </li>
+    </ul>
+}

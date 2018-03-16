@@ -1,0 +1,46 @@
+﻿@model RegisterViewModel
+@{
+    ViewBag.Title = "Регистрация";
+}
+
+<div class="row">
+    <div class="col-md-10 col-md-offset-2">
+        <form asp-route-returnUrl="@ViewData["ReturnUrl"]" method="post" class="form-horizontal">
+            <h4>Создать новую учетную запись.</h4>
+            <div class="row">
+                <div class="col-md-7"><hr /></div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label col-md-3"></label>
+                <span class="col-md-4">
+                    <input asp-for="Email" placeholder="user1@@example.com" class="form-control" />
+                </span>
+                <span asp-validation-for="Email" class="text-danger col-md-5"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label col-md-3"></label>
+                <span class="col-md-4">
+                    <input asp-for="Password" class="form-control" />
+                </span>
+                <span asp-validation-for="Password" class="text-danger col-md-5"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label col-md-3"></label>
+                <span class="col-md-4">
+                    <input asp-for="ConfirmPassword" class="form-control" />
+                </span>
+                <span asp-validation-for="ConfirmPassword" class="text-danger col-md-5"></span>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-7">
+                    <button type="submit" class="btn btn-info btn-block">Зарегистрироваться</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}
